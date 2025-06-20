@@ -83,61 +83,63 @@
   }
 </script>
 
-<div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-  <div class="flex justify-between items-start mb-3">
+<article class="border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow focus-within:ring-4 focus-within:ring-blue-300" role="article" aria-labelledby="kitten-name-{kitten.id}">
+  <div class="flex justify-between items-start mb-6">
     <div class="flex-1">
-      <div class="flex items-center gap-3 mb-2">
-        <h3 class="text-lg font-semibold text-gray-900">{kitten.name}</h3>
-        <span class="px-2 py-1 text-xs font-medium rounded-full {getStatusColor(kitten.status)}">
+      <div class="flex items-center gap-6 mb-4">
+        <h3 id="kitten-name-{kitten.id}" class="text-xl font-semibold text-gray-900">{kitten.name}</h3>
+        <span class="px-4 py-2 text-sm font-medium rounded-full {getStatusColor(kitten.status)}" role="status" aria-label="Status: {kitten.status}">
           {kitten.status}
         </span>
         {#if kitten.sex && kitten.sex !== 'Unknown'}
-          <span class="text-sm text-gray-500">
+          <span class="text-base text-gray-500" aria-label="Sex: {kitten.sex === 'M' ? 'Male' : 'Female'}">
             {kitten.sex === 'M' ? '♂️ Male' : '♀️ Female'}
           </span>
         {/if}
       </div>
       
-      <div class="text-sm text-gray-600 space-y-1">
+      <div class="text-base text-gray-600 space-y-3">
         {#if kitten.birth_date}
-          <div>🎂 {calculateAge(kitten.birth_date)}</div>
+          <div aria-label="Age: {calculateAge(kitten.birth_date)}">🎂 {calculateAge(kitten.birth_date)}</div>
         {/if}
         {#if kitten.color}
-          <div>🎨 {kitten.color}</div>
+          <div aria-label="Color: {kitten.color}">🎨 {kitten.color}</div>
         {/if}
         {#if kitten.rescue_date}
-          <div>🏠 Rescued {formatDate(kitten.rescue_date)}</div>
+          <div aria-label="Rescued: {formatDate(kitten.rescue_date)}">🏠 Rescued {formatDate(kitten.rescue_date)}</div>
         {/if}
       </div>
     </div>
 
     <button
       on:click={deleteKitten}
-      class="text-gray-400 hover:text-red-500 p-1 rounded transition-colors"
-      title="Delete kitten"
+      class="text-gray-400 hover:text-red-500 p-3 rounded-lg transition-colors focus:outline-none focus:ring-4 focus:ring-red-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
+      title="Delete {kitten.name}"
+      aria-label="Delete {kitten.name}"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
       </svg>
     </button>
   </div>
 
-  <div class="bg-gray-50 rounded-lg p-3">
-    <div class="flex justify-between items-center mb-2">
-      <span class="text-sm font-medium text-gray-700">Latest Weight</span>
+  <div class="bg-gray-50 rounded-xl p-6" role="region" aria-labelledby="weight-info-{kitten.id}">
+    <div class="flex justify-between items-center mb-4">
+      <span id="weight-info-{kitten.id}" class="text-base font-medium text-gray-700">Latest Weight</span>
       {#if kitten.latest_weight_date}
-        <span class="text-xs text-gray-500">{formatDate(kitten.latest_weight_date)}</span>
+        <span class="text-sm text-gray-500" aria-label="Measured on {formatDate(kitten.latest_weight_date)}">{formatDate(kitten.latest_weight_date)}</span>
       {/if}
     </div>
     
-    <div class="flex items-center gap-3">
-      <span class="text-lg font-bold text-blue-600">
+    <div class="flex items-center gap-6">
+      <span class="text-2xl font-bold text-blue-600" aria-label="Weight: {formatWeight(kitten.latest_weight)}">
         {formatWeight(kitten.latest_weight)}
       </span>
       
       {#if kitten.weight_change}
-        <div class="flex items-center gap-1 text-sm {getWeightChangeColor(kitten.weight_change)}">
-          <span>{getWeightChangeIcon(kitten.weight_change)}</span>
+        <div class="flex items-center gap-2 text-base {getWeightChangeColor(kitten.weight_change)}" 
+             aria-label="Weight change: {kitten.weight_change > 0 ? 'increased' : 'decreased'} by {Math.abs(kitten.weight_change)} grams{kitten.weight_change_days ? ` over ${kitten.weight_change_days} day${kitten.weight_change_days !== 1 ? 's' : ''}` : ''}">
+          <span aria-hidden="true">{getWeightChangeIcon(kitten.weight_change)}</span>
           <span>
             {kitten.weight_change > 0 ? '+' : ''}{kitten.weight_change}g
             {#if kitten.weight_change_days}
@@ -150,8 +152,8 @@
   </div>
 
   {#if kitten.notes}
-    <div class="mt-3 text-sm text-gray-600">
-      <span class="font-medium">Notes:</span> {kitten.notes}
+    <div class="mt-6 text-base text-gray-600" role="note" aria-labelledby="notes-label-{kitten.id}">
+      <span id="notes-label-{kitten.id}" class="font-medium">Notes:</span> {kitten.notes}
     </div>
   {/if}
-</div>
+</article>
